@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AgriStockModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Categoria">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="ChatProducto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdProducto" Type="int" Nullable="false" />
+    <Property Name="IdTienda" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Compra">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdUsuario" Type="int" />
+    <Property Name="FechaHora" Type="date" />
+    <Property Name="IdMetodoPago" Type="int" />
+    <Property Name="Observaciones" Type="varchar" MaxLength="5000" />
+    <Property Name="Estado" Type="int" />
+    <Property Name="Activo" Type="bit" />
+    <Property Name="Borrado" Type="bit" />
+    <Property Name="Direccion" Type="varchar" MaxLength="1500" />
+  </EntityType>
+  <EntityType Name="DetalleCompra">
+    <Key>
+      <PropertyRef Name="IdCompra" />
+      <PropertyRef Name="idProducto" />
+    </Key>
+    <Property Name="IdCompra" Type="int" Nullable="false" />
+    <Property Name="idProducto" Type="int" Nullable="false" />
+    <Property Name="Cantidad" Type="int" />
+    <Property Name="SubTotal" Type="float" />
+    <Property Name="Iva" Type="float" />
+    <Property Name="Total" Type="float" />
+  </EntityType>
+  <EntityType Name="Direccion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdUsuario" Type="int" />
+    <Property Name="Provincia" Type="nvarchar" MaxLength="50" />
+    <Property Name="Canton" Type="nvarchar" MaxLength="50" />
+    <Property Name="Distrito" Type="nvarchar" MaxLength="50" />
+    <Property Name="DireccionExacta" Type="nvarchar" MaxLength="50" />
+    <Property Name="CodPostal" Type="nvarchar" MaxLength="50" />
+    <Property Name="Activo" Type="bit" />
+    <Property Name="Borrado" Type="bit" />
+  </EntityType>
+  <EntityType Name="Evaluacion">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idCompra" Type="int" />
+    <Property Name="idCliente" Type="int" />
+    <Property Name="idVendedor" Type="int" />
+    <Property Name="calificacionACliente" Type="int" />
+    <Property Name="comentarioACliente" Type="nvarchar" MaxLength="150" />
+    <Property Name="calificacionAVendedor" Type="int" />
+    <Property Name="comentarioAVendedor" Type="nvarchar" MaxLength="150" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'AgriStock.dbo.Mensaje' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="Mensaje">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdChat" Type="int" />
+    <Property Name="Mensaje" Type="varchar" MaxLength="1500" />
+    <Property Name="Respuesta" Type="varchar" MaxLength="1500" />
+    <Property Name="IdRemitente" Type="int" />
+  </EntityType>
+  <EntityType Name="MetodoPago">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdUsuario" Type="int" />
+    <Property Name="TipoPago" Type="nvarchar" MaxLength="20" />
+    <Property Name="Proveedor" Type="nvarchar" MaxLength="20" />
+    <Property Name="NumCuenta" Type="nvarchar" MaxLength="20" />
+    <Property Name="FechaExpiracion" Type="date" />
+    <Property Name="Activo" Type="bit" />
+    <Property Name="Borrado" Type="bit" />
+  </EntityType>
+  <EntityType Name="Perfil">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PerfilUsuario">
+    <Key>
+      <PropertyRef Name="idUsuario" />
+      <PropertyRef Name="idPerfil" />
+    </Key>
+    <Property Name="idUsuario" Type="int" Nullable="false" />
+    <Property Name="idPerfil" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Producto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdCategoria" Type="int" />
+    <Property Name="IdProveedor" Type="int" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="5000" />
+    <Property Name="Imagen" Type="varbinary(max)" />
+    <Property Name="Precio" Type="float" />
+    <Property Name="Stock" Type="int" />
+    <Property Name="Estado" Type="nvarchar" MaxLength="60" />
+    <Property Name="Activo" Type="bit" />
+    <Property Name="Borrado" Type="bit" />
+    <Property Name="Marca" Type="varchar" MaxLength="550" />
+    <Property Name="Nombre" Type="varchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="Tienda">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdUsuario" Type="int" />
+    <Property Name="NombreProveedor" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Direccion" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Activo" Type="bit" />
+    <Property Name="Borrado" Type="bit" />
+  </EntityType>
+  <EntityType Name="Usuario">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Identificacion" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Telefono" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="Correo" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Contrasena" Type="nvarchar" MaxLength="20" />
+    <Property Name="Activo" Type="bit" />
+    <Property Name="Borrado" Type="bit" />
+  </EntityType>
+  <Association Name="FK_ChatProducto_Producto">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+    <End Role="ChatProducto" Type="Self.ChatProducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ChatProducto">
+        <PropertyRef Name="IdProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Compra_Usuario1">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Compra" Type="Self.Compra" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Compra">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetalleCompra_Compra">
+    <End Role="Compra" Type="Self.Compra" Multiplicity="1" />
+    <End Role="DetalleCompra" Type="Self.DetalleCompra" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Compra">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DetalleCompra">
+        <PropertyRef Name="IdCompra" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetalleCompra_Producto">
+    <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+    <End Role="DetalleCompra" Type="Self.DetalleCompra" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DetalleCompra">
+        <PropertyRef Name="idProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Direccion_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Direccion">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluacion_Compra">
+    <End Role="Compra" Type="Self.Compra" Multiplicity="0..1" />
+    <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Compra">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluacion">
+        <PropertyRef Name="idCompra" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluacion_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluacion">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Evaluacion_VendedorServicio">
+    <End Role="Tienda" Type="Self.Tienda" Multiplicity="0..1" />
+    <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tienda">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Evaluacion">
+        <PropertyRef Name="idVendedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Mensaje_ChatProducto">
+    <End Role="ChatProducto" Type="Self.ChatProducto" Multiplicity="0..1" />
+    <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChatProducto">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Mensaje">
+        <PropertyRef Name="IdChat" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Mensaje_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Mensaje" Type="Self.Mensaje" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Mensaje">
+        <PropertyRef Name="IdRemitente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MensajeProducto_VendedorServicio">
+    <End Role="Tienda" Type="Self.Tienda" Multiplicity="1" />
+    <End Role="ChatProducto" Type="Self.ChatProducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tienda">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ChatProducto">
+        <PropertyRef Name="IdTienda" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MetodoPago_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="MetodoPago" Type="Self.MetodoPago" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MetodoPago">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PerfilUsuario_Perfil">
+    <End Role="Perfil" Type="Self.Perfil" Multiplicity="1" />
+    <End Role="PerfilUsuario" Type="Self.PerfilUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Perfil">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PerfilUsuario">
+        <PropertyRef Name="idPerfil" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PerfilUsuario_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+    <End Role="PerfilUsuario" Type="Self.PerfilUsuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PerfilUsuario">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producto_Categoria">
+    <End Role="Categoria" Type="Self.Categoria" Multiplicity="0..1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categoria">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="IdCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Producto_Proveedor">
+    <End Role="Tienda" Type="Self.Tienda" Multiplicity="0..1" />
+    <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tienda">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Producto">
+        <PropertyRef Name="IdProveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_VendedorServicio_Usuario">
+    <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+    <End Role="Tienda" Type="Self.Tienda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuario">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Tienda">
+        <PropertyRef Name="IdUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AgriStockModelStoreContainer">
+    <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ChatProducto" EntityType="Self.ChatProducto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Compra" EntityType="Self.Compra" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DetalleCompra" EntityType="Self.DetalleCompra" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Direccion" EntityType="Self.Direccion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Evaluacion" EntityType="Self.Evaluacion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MetodoPago" EntityType="Self.MetodoPago" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Perfil" EntityType="Self.Perfil" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PerfilUsuario" EntityType="Self.PerfilUsuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tienda" EntityType="Self.Tienda" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Mensaje" EntityType="Self.Mensaje" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Mensaje].[Id] AS [Id], 
+    [Mensaje].[IdChat] AS [IdChat], 
+    [Mensaje].[Mensaje] AS [Mensaje], 
+    [Mensaje].[Respuesta] AS [Respuesta], 
+    [Mensaje].[IdRemitente] AS [IdRemitente]
+    FROM [dbo].[Mensaje] AS [Mensaje]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_ChatProducto_Producto" Association="Self.FK_ChatProducto_Producto">
+      <End Role="Producto" EntitySet="Producto" />
+      <End Role="ChatProducto" EntitySet="ChatProducto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Compra_Usuario1" Association="Self.FK_Compra_Usuario1">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Compra" EntitySet="Compra" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetalleCompra_Compra" Association="Self.FK_DetalleCompra_Compra">
+      <End Role="Compra" EntitySet="Compra" />
+      <End Role="DetalleCompra" EntitySet="DetalleCompra" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetalleCompra_Producto" Association="Self.FK_DetalleCompra_Producto">
+      <End Role="Producto" EntitySet="Producto" />
+      <End Role="DetalleCompra" EntitySet="DetalleCompra" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Direccion_Usuario" Association="Self.FK_Direccion_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Direccion" EntitySet="Direccion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluacion_Compra" Association="Self.FK_Evaluacion_Compra">
+      <End Role="Compra" EntitySet="Compra" />
+      <End Role="Evaluacion" EntitySet="Evaluacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluacion_Usuario" Association="Self.FK_Evaluacion_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Evaluacion" EntitySet="Evaluacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Evaluacion_VendedorServicio" Association="Self.FK_Evaluacion_VendedorServicio">
+      <End Role="Tienda" EntitySet="Tienda" />
+      <End Role="Evaluacion" EntitySet="Evaluacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Mensaje_ChatProducto" Association="Self.FK_Mensaje_ChatProducto">
+      <End Role="ChatProducto" EntitySet="ChatProducto" />
+      <End Role="Mensaje" EntitySet="Mensaje" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Mensaje_Usuario" Association="Self.FK_Mensaje_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Mensaje" EntitySet="Mensaje" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MensajeProducto_VendedorServicio" Association="Self.FK_MensajeProducto_VendedorServicio">
+      <End Role="Tienda" EntitySet="Tienda" />
+      <End Role="ChatProducto" EntitySet="ChatProducto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MetodoPago_Usuario" Association="Self.FK_MetodoPago_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="MetodoPago" EntitySet="MetodoPago" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PerfilUsuario_Perfil" Association="Self.FK_PerfilUsuario_Perfil">
+      <End Role="Perfil" EntitySet="Perfil" />
+      <End Role="PerfilUsuario" EntitySet="PerfilUsuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PerfilUsuario_Usuario" Association="Self.FK_PerfilUsuario_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="PerfilUsuario" EntitySet="PerfilUsuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producto_Categoria" Association="Self.FK_Producto_Categoria">
+      <End Role="Categoria" EntitySet="Categoria" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Producto_Proveedor" Association="Self.FK_Producto_Proveedor">
+      <End Role="Tienda" EntitySet="Tienda" />
+      <End Role="Producto" EntitySet="Producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VendedorServicio_Usuario" Association="Self.FK_VendedorServicio_Usuario">
+      <End Role="Usuario" EntitySet="Usuario" />
+      <End Role="Tienda" EntitySet="Tienda" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
